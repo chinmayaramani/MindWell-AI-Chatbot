@@ -1,3 +1,5 @@
+Author: Chinmaya Ramani
+
 MindWell AI Chatbot 🤖
 A sophisticated, locally-run AI chatbot designed to provide supportive and context-aware answers to mental health questions. This application leverages a Retrieval-Augmented Generation (RAG) pipeline to ensure all responses are grounded in a curated PDF knowledge base, preventing AI hallucination and providing safe, relevant information.
 
