@@ -1,91 +1,95 @@
-Mindful AI Therapist 🤖💬
-A compassionate and safe AI assistant designed to answer mental health questions using a curated knowledge base. This project showcases a complete Retrieval-Augmented Generation (RAG) pipeline, from local model inference to a polished web interface.
+MindWell AI Chatbot 🤖
+A sophisticated, locally-run AI chatbot designed to provide supportive and context-aware answers to mental health questions. This application leverages a Retrieval-Augmented Generation (RAG) pipeline to ensure all responses are grounded in a curated PDF knowledge base, preventing AI hallucination and providing safe, relevant information.
 
-Key Features
-Secure & Private: Runs 100% locally using Ollama and the phi3:mini model. No user data is sent to the cloud.
+🌟 Key Features
+Advanced RAG Pipeline: Utilizes a ParentDocumentRetriever to ensure the AI has complete context, leading to highly accurate and relevant answers.
 
-Fact-Grounded Responses: Implements an advanced RAG pipeline with a Parent Document Retriever to prevent AI "hallucination" and ensure all answers are based on the provided PDF documents.
+100% Local & Private: Runs entirely on your local machine using Ollama, ensuring user privacy and offline functionality.
 
-Conversational Memory: Remembers the last few turns of the conversation to understand follow-up questions and provide a natural user experience.
+GPU Accelerated: Automatically leverages NVIDIA GPUs for significantly faster response times.
 
-Built-in Safety Protocols: Includes a robust, multi-layered system prompt to handle sensitive topics, redirect concerning statements, and provide immediate crisis intervention information.
+Persistent Conversation History: Integrates a SQLite database to save all conversations, demonstrating full-stack capabilities and enabling future features.
 
-Polished User Interface: A clean, responsive, and modern UI built with Streamlit, featuring a dark mode, custom chat bubbles, and suggested prompts for user guidance.
+Robust Safety Protocols: A hardened SYSTEM_PROMPT provides a multi-layered defense against off-topic questions, handles concerning statements with empathy, and includes a critical, verbatim crisis intervention protocol.
 
-Fast & Efficient: Uses a FAISS vector store for rapid similarity searches and persists the knowledge base to disk for near-instant startups.
+Polished User Interface: A custom-styled Streamlit front-end with a professional dark mode, custom chat bubbles, and a clean, intuitive layout.
 
-Architecture Overview
-This project follows a classic Retrieval-Augmented Generation (RAG) architecture:
+Fast & Efficient Knowledge Base: Uses a FAISS vector store with persistence for near-instantaneous startups after the initial setup.
 
-Data Ingestion: A PDF knowledge base (mental_health_guide.pdf) is loaded and processed by the pdf_loader.py script.
+🛠️ Tech Stack & Architecture
+This project combines a modern AI stack with classic web and database technologies.
 
-Indexing: The LangChain ParentDocumentRetriever splits the document into parent and child chunks. The child chunks are vectorized using OllamaEmbeddings and stored in a local FAISS vector store for efficient searching.
-
-User Interface: The streamlit run app.py command launches a web interface where users can input queries.
-
-Retrieval: When a user asks a question, the retriever finds the most relevant child chunks in the vector store and then retrieves their corresponding full-context parent chunks.
-
-Generation: The user's question, the retrieved context, and the conversation history are passed to a locally-run phi3:mini model via Ollama. A carefully engineered system prompt guides the model to generate a safe, empathetic, and fact-grounded response.
-
-Tech Stack
-Web Framework: Streamlit
+Front-End: Streamlit
 
 AI Orchestration: LangChain
 
-LLM Serving: Ollama CLI
-
-LLM Model: phi3:mini
-
-Embeddings Model: OllamaEmbeddings
+LLM Serving: Ollama (running phi3:mini)
 
 Vector Store: FAISS (Facebook AI Similarity Search)
 
-PDF Processing: PyPDFLoader
+Database: SQLite
 
-Getting Started
+PDF Loading: PyPDFLoader
+
+The application follows a standard RAG workflow:
+
+A comprehensive mental health guide (mental_health_guide.pdf) is loaded and split into parent/child chunks.
+
+The child chunks are embedded and stored in a FAISS vector index for fast semantic search.
+
+When a user asks a question, the most relevant child chunks are found, and their corresponding parent chunks are retrieved to provide full context.
+
+The user's question, chat history, and the retrieved context are passed to the LLM via a carefully crafted system prompt.
+
+The AI generates a response, which is streamed back to the user interface and saved to the SQLite database.
+
+🚀 Local Setup and Installation
+Follow these steps to run the application on your local machine.
+
 Prerequisites
 Python 3.9+
 
-Ollama installed and running.
+Git
 
-Installation & Setup
-Clone the repository:
+Ollama
 
-git clone [YOUR_GITHUB_REPO_LINK_HERE]
-cd mental_health_bot
+1. Clone the Repository
+Open your terminal or Git Bash and clone this repository:
 
-Create and activate a Python virtual environment:
+git clone [https://github.com/chinmayaramani/MindWell-AI-Chatbot.git](https://github.com/chinmayaramani/MindWell-AI-Chatbot.git)
+cd MindWell-AI-Chatbot
 
-# For Windows
+2. Set Up the Python Virtual Environment
+It is highly recommended to use a virtual environment to manage dependencies.
+
+# Create the virtual environment
 python -m venv .venv
-.venv\Scripts\activate
 
-Install the required dependencies:
+# Activate the virtual environment
+# On Windows:
+.venv\Scripts\activate
+# On macOS/Linux:
+source .venv/bin/activate
+
+3. Install Dependencies
+Install all the required Python libraries from the requirements.txt file.
 
 pip install -r requirements.txt
 
-(Note: You may need to create a requirements.txt file by running pip freeze > requirements.txt)
-
-Pull the Ollama model:
+4. Download the AI Model
+Pull the phi3:mini model using Ollama. This will download the model to your machine.
 
 ollama pull phi3:mini
 
-Place your knowledge base:
+5. Add the Knowledge Base
+Place your knowledge base PDF in the root of the project folder and ensure it is named mental_health_guide.pdf.
 
-Add your mental_health_guide.pdf file to the root of the project directory.
+6. (Recommended for Performance) NVIDIA GPU Setup
+For the best performance, ensure you have an NVIDIA GPU and have installed the latest NVIDIA Studio Driver. Ollama will automatically use the GPU if it's available.
 
-Running the Application
-Launch the Streamlit app:
+7. Run the Application
+Launch the Streamlit app. The first run will take a moment to build the knowledge base. Subsequent runs will be much faster.
 
 streamlit run app.py
 
-First-time setup: The application will automatically build the FAISS vector store and docstore from your PDF. This may take a moment. Subsequent launches will be near-instantaneous.
-
-Open your browser: Navigate to http://localhost:8501 to start chatting with the AI.
-
-Future Plans
-Source Transparency: Implement an expander below each response to show the exact PDF chunks used for generation.
-
-Database Integration: Add a database (e.g., SQLite or PostgreSQL) to store conversation histories for analytics and user feedback.
-
-Cloud Deployment: Package the application in Docker and deploy it to a cloud service for persistent, multi-user access.
+Your chatbot should now be running and accessible in your web browser!
