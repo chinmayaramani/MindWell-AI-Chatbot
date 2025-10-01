@@ -26,7 +26,7 @@ DOCSTORE_PATH = "docstore.pkl"
 DB_PATH = "chat_history.db" # NEW: Database file path
 MODEL_NAME = "phi3:mini"
 SUGGESTED_QUESTIONS = [
-    "What are some techniques for managing anxiety?",
+    "What are some techniques for managing stress?",
     "Can you explain mindfulness meditation?",
     "How can I improve my sleep quality?",
 ]
@@ -66,55 +66,100 @@ if "memory" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "Welcome! I'm MindWell AI. How can I support you today?"}]
 
-# --- Custom CSS ---
+# --- Custom CSS for a Dark Blue Theme ---
 st.markdown("""
 <style>
-    /* ... existing CSS ... */
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display.swap');
-    html, body, [class*="st-"] { font-family: 'Roboto', sans-serif; color: #e0e_0e0; }
+    
+    /* General Styling */
+    html, body, [class*="st-"] { 
+        font-family: 'Roboto', sans-serif; 
+        color: #e0e0e0; /* Light text for readability on dark background */
+    }
+    
+    /* Main App Background */
     .stApp {
-        background-color: #121212;
+        background-color: #0F172A; /* Dark Blue background */
         background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
         background-size: 20px 20px;
     }
-    section.main > div { max-width: 720px; }
-    h1 { text-align: center; color: #FFFFFF; }
+    
+    /* Center the main content */
+    section.main > div { 
+        max-width: 720px; 
+    }
+    
+    /* Title Styling */
+    h1 { 
+        text-align: center; 
+        color: #FFFFFF; /* White title */
+    }
+    
+    /* Chat Bubble Styling */
     .st-emotion-cache-1c7y2kd {
         border: 1px solid rgba(255, 255, 255, 0.1);
         box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         border-radius: 18px;
     }
-    div[data-testid="stChatMessage"]:has(span[data-testid="chat-avatar-assistant"]) .st-emotion-cache-1c7y2kd { background-color: #2C2C2E; color: #FFFFFF; }
-    div[data-testid="stChatMessage"]:has(span[data-testid="chat-avatar-user"]) { display: flex; flex-direction: row-reverse; }
-    div[data-testid="stChatMessage"]:has(span[data-testid="chat-avatar-user"]) .st-emotion-cache-1c7y2kd { background-color: #007AFF; color: #FFFFFF; }
     
-    .st-emotion-cache-1wivap2 {
-        background-color: rgba(255, 184, 0, 0.1); border-radius: 12px;
-        border-left: 5px solid #FFB800; color: #FFB800;
+    /* Assistant message styling */
+    div[data-testid="stChatMessage"]:has(span[data-testid="chat-avatar-assistant"]) .st-emotion-cache-1c7y2kd { 
+        background-color: #1E293B; /* Slightly lighter dark blue */
+        color: #FFFFFF;
     }
-    .st-emotion-cache-1wivap2 a, .st-emotion-cache-1wivap2 strong { color: #FFD466; }
     
+    /* User message styling */
+    div[data-testid="stChatMessage"]:has(span[data-testid="chat-avatar-user"]) { 
+        display: flex; 
+        flex-direction: row-reverse; 
+    }
+    
+    div[data-testid="stChatMessage"]:has(span[data-testid="chat-avatar-user"]) .st-emotion-cache-1c7y2kd { 
+        background-color: #007AFF; /* Bright blue for user */
+        color: #FFFFFF;
+    }
+    
+    /* Disclaimer Box */
+    .st-emotion-cache-1wivap2 {
+        background-color: rgba(255, 184, 0, 0.1); 
+        border-radius: 12px;
+        border-left: 5px solid #FFB800; 
+        color: #FFB800;
+    }
+    .st-emotion-cache-1wivap2 a, .st-emotion-cache-1wivap2 strong { 
+        color: #FFD466; 
+    }
+    
+    /* Suggested questions button styling */
     .stButton>button {
-        background-color: #2C2C2E; color: #FFFFFF; border: 1px solid #3A3A3C;
-        border-radius: 12px; padding: 10px 15px; width: 100%; text-align: left;
+        background-color: #1E293B; 
+        color: #FFFFFF; 
+        border: 1px solid #334155;
+        border-radius: 12px; 
+        padding: 10px 15px; 
+        width: 100%; 
+        text-align: left;
         transition: all 0.2s ease-in-out;
     }
-    .stButton>button:hover { background-color: #3A3A3C; border-color: #007AFF; }
+    .stButton>button:hover { 
+        background-color: #334155; 
+        border-color: #007AFF; 
+    }
 
+    /* New Chat button in the top-left corner */
     div[data-testid="stHorizontalBlock"] .stButton>button {
         background-color: transparent;
-        color: #AAAAAA;
-        border: 1px solid #3A3A3C;
+        color: #94A3B8;
+        border: 1px solid #334155;
         width: auto;
         font-weight: bold;
     }
     div[data-testid="stHorizontalBlock"] .stButton>button:hover {
         color: #FFFFFF;
-        border-color: #AAAAAA;
+        border-color: #94A3B8;
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 # --- REVISED HEADER AND NEW CHAT BUTTON ---
 col1, col2, col3 = st.columns([1, 2, 1])
